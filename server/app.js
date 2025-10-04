@@ -1,6 +1,7 @@
 // imports
 const express = require("express");
 const app = express();
+const path = require("path");
 
 // add viewer engine
 
@@ -12,7 +13,7 @@ app.use(express.static("public"));
 // routes
 app.get("/api", (req, res) => {
   // res.json({ message: "Hello from server!" });
-  res.send('<img src="/waldo_beach.jpg" />');
+  res.sendFile(path.resolve("public/waldo_beach.jpg"));
 });
 
 const PORT = process.env.PORT || 3000;
