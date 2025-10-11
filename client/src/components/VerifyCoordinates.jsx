@@ -4,8 +4,18 @@ import {
   waldo_x_coordinates,
   waldo_y_coordinates,
 } from "../utils/WALDO_COORDINATES";
+import GameTimeDelta from "./GameTimeDelta";
 
-function VerifyCoordinates({ event, guessCoordinates, setGuessCoordinates }) {
+function VerifyCoordinates({
+  event,
+  setGameStatus,
+  startTime,
+  setEndTime,
+  guessCoordinates,
+  setGuessCoordinates,
+}) {
+  if (!event) return null;
+
   const userClickCoordinates = ClickCoordinates(event);
   const nextGuessCoordinates = [...guessCoordinates, userClickCoordinates];
   setGuessCoordinates(nextGuessCoordinates);
@@ -14,19 +24,29 @@ function VerifyCoordinates({ event, guessCoordinates, setGuessCoordinates }) {
   const mostRecentGuessIndex = nextGuessCoordinates.length - 1;
   const mostRecentXCoord = nextGuessCoordinates[mostRecentGuessIndex].x;
   const mostRecentYCoord = nextGuessCoordinates[mostRecentGuessIndex].y;
-  //   const correctGuessMessage = alert("You found Waldo!");
-  //   const wrongGuessMessage = alert("Guess again!");
+
   const correctXCoord = waldo_x_coordinates.includes(mostRecentXCoord);
   const correctYCoord = waldo_y_coordinates.includes(mostRecentYCoord);
 
   console.log("X Guess: ", mostRecentXCoord);
   console.log("X Coordinates:", waldo_x_coordinates);
-  console.log("Guess Correct?: ", correctXCoord);
+  console.log("Y Guess: ", mostRecentYCoord);
+  console.log("Y Coordinates:", waldo_y_coordinates);
+  console.log("Guess X Correct?: ", correctXCoord);
+  console.log("Guess Y Correct?: ", correctYCoord);
+
+  function correctClickHandler() {
+    const nextEndTime = Date.now();
+    setEndTime(nextEndTime);
+    setGameStatus("stop");
+    const timeToFind = GameTimeDelta({ startTime, nextEndTime });
+    alert(`You found Waldo in ${timeToFind} seconds!`);
+  }
 
   return (
     <>
       {correctXCoord && correctYCoord
-        ? alert("You found Waldo!")
+        ? correctClickHandler()
         : alert("Guess again!")}
     </>
   );
