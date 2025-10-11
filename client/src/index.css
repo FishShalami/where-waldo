@@ -22,3 +22,7 @@
   width: 90vw;
   aspect-ratio: auto;
 }
+
+button {
+  text-align: center;
+}
