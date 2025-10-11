@@ -1,25 +1,8 @@
-// import { useState } from "react";
+import React from "react";
+import LoadWaldoImage from "./components/LoadWaldoImage";
 
 function App() {
-  function handleClick(event) {
-    const clickCoords = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-    console.log(clickCoords);
-  }
-
-  return (
-    <>
-      <div className="image-container" onClick={handleClick}>
-        <img
-          src="http://localhost:3000/api"
-          className="waldo-image"
-          alt="waldo-image-full-screen"
-        />
-      </div>
-    </>
-  );
+  return <LoadWaldoImage />;
 }
 
 export default App;
