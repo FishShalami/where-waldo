@@ -14,6 +14,7 @@ function VerifyCoordinates({
   guessCoordinates,
   setGuessCoordinates,
 }) {
+  //bail if the game isn't running
   if (!event) return null;
 
   const userClickCoordinates = ClickCoordinates(event);
@@ -22,8 +23,8 @@ function VerifyCoordinates({
   console.log("USER GUESS COORDS:", nextGuessCoordinates);
 
   const mostRecentGuessIndex = nextGuessCoordinates.length - 1;
-  const mostRecentXCoord = nextGuessCoordinates[mostRecentGuessIndex].x;
-  const mostRecentYCoord = nextGuessCoordinates[mostRecentGuessIndex].y;
+  const mostRecentXCoord = nextGuessCoordinates[mostRecentGuessIndex].xPct;
+  const mostRecentYCoord = nextGuessCoordinates[mostRecentGuessIndex].yPct;
 
   const correctXCoord = waldo_x_coordinates.includes(mostRecentXCoord);
   const correctYCoord = waldo_y_coordinates.includes(mostRecentYCoord);
