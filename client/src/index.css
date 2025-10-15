@@ -40,9 +40,15 @@
   justify-content: center;
 }
 
-.image-container img {
+.waldo-image {
   width: 1200px;
   aspect-ratio: auto;
+}
+
+.waldo-image-hide {
+  width: 1200px;
+  aspect-ratio: auto;
+  filter: sepia(2) hue-rotate(-60deg) saturate(2) brightness(0.25);
 }
 
 .start-button-container {
@@ -55,4 +61,9 @@
   border-radius: 8px;
   font-family: "Coiny";
   box-shadow: 2px 2px 5px red, -2px -2px 5px white;
+}
+
+.timer {
+  text-align: center;
+  margin-bottom: 10px;
 }
