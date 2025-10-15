@@ -11,8 +11,9 @@ function LoadWaldoImage() {
 
   return (
     <>
-      <div>
+      <div className="start-button-container">
         <button
+          className="start-button"
           onClick={() => {
             setGameStatus("run");
             GameTimeStart({ setStartTime });
