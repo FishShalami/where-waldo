@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Coiny&display=swap");
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Coiny", Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -13,16 +15,44 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.header h1 {
+  text-align: center;
+  background-image: repeating-linear-gradient(
+    0deg,
+    #ff0000 0px,
+    #ff0000 5px,
+    #ffffff 5px,
+    #ffffff 10px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 4rem;
+}
+
+.header p {
+  text-align: center;
+  font-size: 2rem;
+}
+
 .image-container {
   display: flex;
   justify-content: center;
 }
 
 .image-container img {
-  width: 90vw;
+  width: 1200px;
   aspect-ratio: auto;
 }
 
-button {
-  text-align: center;
+.start-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+}
+
+.start-button-container .start-button {
+  border-radius: 8px;
+  font-family: "Coiny";
+  box-shadow: 2px 2px 5px red, -2px -2px 5px white;
 }
