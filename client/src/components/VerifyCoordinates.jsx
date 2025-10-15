@@ -39,7 +39,7 @@ function VerifyCoordinates({
   function correctClickHandler() {
     const nextEndTime = Date.now();
     setEndTime(nextEndTime);
-    setGameStatus("stop");
+    setGameStatus(false);
     const timeToFind = GameTimeDelta({ startTime, nextEndTime });
     alert(`You found Waldo in ${timeToFind} seconds!`);
   }

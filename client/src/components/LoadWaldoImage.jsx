@@ -4,10 +4,26 @@ import GameTimeStart from "./GameTimeStart";
 
 function LoadWaldoImage() {
   //set state variables
-  const [gameStatus, setGameStatus] = React.useState("stop");
+  const [gameStatus, setGameStatus] = React.useState(false);
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
   const [guessCoordinates, setGuessCoordinates] = React.useState([]);
+  const [displayElapsedTime, setDisplayElapsedTime] = React.useState(0);
+
+  React.useEffect(() => {
+    let interval = null;
+
+    if (gameStatus && endTime === "") {
+      interval = setInterval(() => {
+        setDisplayElapsedTime((displayElapsedTime) => displayElapsedTime + 1);
+      }, 1000);
+    }
+
+    //clean-up
+    return () => {
+      clearInterval(interval);
+    };
+  }, [gameStatus, endTime]);
 
   return (
     <>
@@ -15,21 +31,22 @@ function LoadWaldoImage() {
         <button
           className="start-button"
           onClick={() => {
-            setGameStatus("run");
+            setGameStatus(true);
             GameTimeStart({ setStartTime });
           }}
         >
           Start Game
         </button>
       </div>
+      <div className="timer">{displayElapsedTime} seconds</div>
       <div className="image-container">
         <img
           src="http://localhost:3000/api"
-          className="waldo-image"
+          className={gameStatus ? "waldo-image" : "waldo-image-hide"}
           alt="waldo-image-full-screen"
           onClick={
             //verify game is running before testing coordinates
-            gameStatus === "run"
+            gameStatus
               ? (event) =>
                   VerifyCoordinates({
                     event,
