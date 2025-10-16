@@ -38,6 +38,7 @@ function LoadWaldoImage() {
           Start Game
         </button>
       </div>
+      {/* add logic to only show timer when game is running */}
       <div className="timer">{displayElapsedTime} seconds</div>
       <div className="image-container">
         <img
