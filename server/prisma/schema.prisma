@@ -6,10 +6,37 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+
+model CharacterRegion {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  characterName     String
+  polygon Json
+
+}
+
+model Player {
+  id     Int     @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  username   String @unique
+  scores Score[]     
+  
+}
+
+model Score {
+  id      Int      @id @default(autoincrement())
+  elapsedMs Int
+  createdAt DateTime  @default(now())
+  player  Player  @relation(fields: [playerId], references: [id])
+  playerId  Int
+
+  @@index([playerId, elapsedMs])
 }
