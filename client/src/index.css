@@ -48,7 +48,7 @@
 .waldo-image-hide {
   width: 1200px;
   aspect-ratio: auto;
-  filter: sepia(2) hue-rotate(-60deg) saturate(2) brightness(0.25);
+  filter: sepia(5) hue-rotate(-60deg) saturate(12) brightness(0.12);
 }
 
 .start-button-container {

@@ -15,5 +15,10 @@
     "prisma": "^6.17.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "cookie-session": "^2.1.1",
+    "cors": "^2.8.5"
   }
 }
