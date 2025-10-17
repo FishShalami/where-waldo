@@ -7,9 +7,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies
+/client/node_modules
+/server/node_modules
+
+# Build outputs
+/client/dist
+/client/dist-ssr
+/server/dist
+
+# Environment files
+.env
+.env.*
+/client/.env
+/server/.env
+
+# Local config
 *.local
 
 # Editor directories and files
@@ -22,3 +35,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+/generated/prisma
+
