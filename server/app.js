@@ -82,6 +82,14 @@ app.post("/api/session/start", (req, res) => {
   res.status(200).json({ ok: true, startedAt: req.session.gameStart });
 });
 
+//game end
+app.post("/api/session/end", (req, res) => {
+  req.session = {
+    gameEnd: Date.now(),
+  };
+  res.status(200).json({ ok: true, endedAt: req.session.gameEnd });
+});
+
 /**
  * POST /api/score
  * Body: { username: string }
@@ -93,11 +101,18 @@ app.post("/api/score", async (req, res) => {
     if (!username || typeof username !== "string") {
       return res.status(400).json({ error: "Invalid username" });
     }
+
+    //check start time is in cookie
     if (!req.session?.gameStart) {
       return res.status(400).json({ error: "No active game session" });
     }
 
-    const elapsedMs = Date.now() - req.session.gameStart;
+    //check end time is in cookie
+    if (!req.session?.gameEnd) {
+      return res.status(400).json({ error: "Game hasn't ended" });
+    }
+
+    const elapsedMs = req.session.gameEnd - req.session.gameStart;
     // Simple sanity checks (optional):
     if (elapsedMs < 1000) {
       return res.status(400).json({ error: "Elapsed time too small" });
