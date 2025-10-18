@@ -25,6 +25,13 @@ function LoadWaldoImage() {
     };
   }, [gameStatus, endTime]);
 
+  async function startSession() {
+    await fetch("http://localhost:3000/api/session/start", {
+      method: "POST",
+      credentials: "include",
+    });
+  }
+
   return (
     <>
       <div className="start-button-container">
@@ -33,6 +40,7 @@ function LoadWaldoImage() {
           onClick={() => {
             setGameStatus(true);
             GameTimeStart({ setStartTime });
+            startSession();
           }}
         >
           Start Game

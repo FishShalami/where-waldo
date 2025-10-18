@@ -4,6 +4,7 @@ import path from "path";
 import dotenv from "dotenv";
 import cookieSession from "cookie-session";
 import { PrismaClient } from "@prisma/client";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,15 +14,22 @@ const app = express();
 
 // add viewer engine
 
+//set cors policy for react server
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your React dev server
+    credentials: true, // allow cookies
+  })
+);
+
 // add passport session
 app.use(
   cookieSession({
     name: "waldo_sess",
     secret: process.env.COOKIE_SESSION_SECRET,
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "lax", // works cross-site if top-level nav; for iframes use "none"
     secure: process.env.NODE_ENV === "production",
-    maxAge: undefined,
   })
 );
 
@@ -82,7 +90,7 @@ app.post("/api/session/start", (req, res) => {
 app.post("/api/score", async (req, res) => {
   try {
     const { username } = req.body || {};
-    if (!username || typeof username !== "string" || username.length > 24) {
+    if (!username || typeof username !== "string") {
       return res.status(400).json({ error: "Invalid username" });
     }
     if (!req.session?.gameStart) {
