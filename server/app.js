@@ -75,19 +75,29 @@ app.get("/api/leaderboard", async (req, res) => {
  * Call this when the user clicks "Start".
  */
 app.post("/api/session/start", (req, res) => {
+  if (!req.session) req.session = {};
+
   // New session each time start is pressed:
-  req.session = {
-    gameStart: Date.now(),
-  };
-  res.status(200).json({ ok: true, startedAt: req.session.gameStart });
+  (req.session.gameStart = Date.now()),
+    res.status(200).json({ ok: true, startedAt: req.session.gameStart });
 });
 
 //game end
 app.post("/api/session/end", (req, res) => {
-  req.session = {
-    gameEnd: Date.now(),
-  };
-  res.status(200).json({ ok: true, endedAt: req.session.gameEnd });
+  (req.session.gameEnd = Date.now()),
+    res.status(200).json({
+      ok: true,
+      startedAt: req.session.gameStart,
+      endedAt: req.session.gameEnd,
+    });
+});
+
+//game time delta end
+app.get("/api/session/end", (req, res) => {
+  const endTime = req.session?.gameEnd;
+  const startTime = req.session?.gameStart;
+  const delta = (endTime - startTime) / 1000;
+  res.status(200).json({ delta });
 });
 
 /**

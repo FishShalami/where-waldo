@@ -1,6 +1,7 @@
 import React from "react";
 import VerifyCoordinates from "./VerifyCoordinates";
 import GameTimeStart from "./GameTimeStart";
+import UserForm from "./UserForm";
 
 function LoadWaldoImage() {
   //set state variables
@@ -9,6 +10,7 @@ function LoadWaldoImage() {
   const [endTime, setEndTime] = React.useState("");
   const [guessCoordinates, setGuessCoordinates] = React.useState([]);
   const [displayElapsedTime, setDisplayElapsedTime] = React.useState(0);
+  const [gameOver, setGameOver] = React.useState(false);
 
   React.useEffect(() => {
     let interval = null;
@@ -26,10 +28,49 @@ function LoadWaldoImage() {
   }, [gameStatus, endTime]);
 
   async function startSession() {
-    await fetch("http://localhost:3000/api/session/start", {
+    const res = await fetch("http://localhost:3000/api/session/start", {
       method: "POST",
       credentials: "include",
     });
+    const data = await res.json();
+  }
+
+  // async function confirmEndGame() {
+  //   try {
+  //     const res = await fetch("http://localhost:3000/api/session/end", {
+  //       method: "GET",
+  //       credentials: "include",
+  //     });
+  //     const data = await res.json();
+  //     console.log("Confirm end game:", data.hasOwnProperty("endTime"));
+  //     return data.hasOwnProperty("endTime");
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
+
+  function imageClickHandler(event) {
+    console.log("calling imageClickHandler");
+    //verify game is running before testing coordinates
+    if (!gameStatus) {
+      return;
+    }
+
+    VerifyCoordinates({
+      event,
+      setGameStatus,
+      startTime,
+      setEndTime,
+      guessCoordinates,
+      setGuessCoordinates,
+      setGameOver,
+    });
+
+    // setTimeout(() => {
+    //   // console.log("call confirmEndGame");
+    //   const gameEnded = confirmEndGame();
+    //   console.log("within setTimeout setter:", gameEnded);
+    // }, 250);
   }
 
   return (
@@ -46,27 +87,14 @@ function LoadWaldoImage() {
           Start Game
         </button>
       </div>
-      {/* add logic to only show timer when game is running */}
       <div className="timer">{displayElapsedTime} seconds</div>
+      {gameOver ? <UserForm /> : null}
       <div className="image-container">
         <img
           src="http://localhost:3000/api"
           className={gameStatus ? "waldo-image" : "waldo-image-hide"}
           alt="waldo-image-full-screen"
-          onClick={
-            //verify game is running before testing coordinates
-            gameStatus
-              ? (event) =>
-                  VerifyCoordinates({
-                    event,
-                    setGameStatus,
-                    startTime,
-                    setEndTime,
-                    guessCoordinates,
-                    setGuessCoordinates,
-                  })
-              : undefined
-          }
+          onClick={imageClickHandler}
         />
       </div>
     </>
