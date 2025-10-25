@@ -12,6 +12,7 @@ function LoadWaldoImage() {
   const [displayElapsedTime, setDisplayElapsedTime] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(false);
 
+  //counter for the UI
   React.useEffect(() => {
     let interval = null;
 
@@ -27,6 +28,7 @@ function LoadWaldoImage() {
     };
   }, [gameStatus, endTime]);
 
+  //move this into a useEffect()?
   async function startSession() {
     const res = await fetch("http://localhost:3000/api/session/start", {
       method: "POST",
@@ -34,20 +36,6 @@ function LoadWaldoImage() {
     });
     const data = await res.json();
   }
-
-  // async function confirmEndGame() {
-  //   try {
-  //     const res = await fetch("http://localhost:3000/api/session/end", {
-  //       method: "GET",
-  //       credentials: "include",
-  //     });
-  //     const data = await res.json();
-  //     console.log("Confirm end game:", data.hasOwnProperty("endTime"));
-  //     return data.hasOwnProperty("endTime");
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
 
   function imageClickHandler(event) {
     console.log("calling imageClickHandler");
@@ -65,12 +53,6 @@ function LoadWaldoImage() {
       setGuessCoordinates,
       setGameOver,
     });
-
-    // setTimeout(() => {
-    //   // console.log("call confirmEndGame");
-    //   const gameEnded = confirmEndGame();
-    //   console.log("within setTimeout setter:", gameEnded);
-    // }, 250);
   }
 
   return (

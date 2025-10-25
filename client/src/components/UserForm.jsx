@@ -3,6 +3,9 @@ import React from "react";
 function UserForm() {
   console.log("UserForm component called");
   const [username, setUsername] = React.useState("");
+  const [showMessage, setShowMessage] = React.useState(true);
+  const [messageSuccess, setMessageSuccess] = React.useState(false);
+  const [messageData, setMessageData] = React.useState({});
 
   async function submitScore() {
     const res = await fetch("http://localhost:3000/api/score", {
@@ -11,16 +14,26 @@ function UserForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: username }),
     });
-    const data = await res.json();
+    const data = await res.json(); // { ok, username, elapsedMs, scoreId }
     if (!res.ok) {
       throw new Error(data.error || "Submit failed");
     }
     console.log(data);
     if (data.ok) {
-      const guessTime = data.elapsedMs / 1000;
-      alert(`Good job ${data.username}! Your score of ${guessTime} was posted`);
+      setMessageSuccess(true);
+      console.log("data posted successfully");
+      setMessageData(data);
     }
-    return data; // { ok, username, elapsedMs, scoreId }
+  }
+
+  function successMessageHandler() {
+    const guessTime = messageData.elapsedMs / 1000;
+    return (
+      <div className="username-form-container">
+        <p>{`Good job ${messageData.username}! Your score of ${guessTime} was posted`}</p>
+        <button onClick={closeButtonHandler}>Close</button>
+      </div>
+    );
   }
 
   function handleSubmit(event) {
@@ -28,24 +41,22 @@ function UserForm() {
     submitScore();
   }
 
-  //   async function timeToFind() {
-  //     const res = await fetch("http://localhost:3000/api/session/end", {
-  //       method: "GET",
-  //       credentials: "include",
-  //     });
-  //     const data = await res.json();
-  //     return data.delta;
-  //   }
+  function closeButtonHandler() {
+    setShowMessage(false);
+  }
 
-  //   const timeToFindSeconds = timeToFind();
+  function showMessageLogicHandler() {
+    if (!showMessage) {
+      return null;
+    }
+    return messageSuccess ? successMessageHandler() : userFormElement;
+  }
 
-  return (
+  const userFormElement = (
     <div className="username-form-container">
-      {/* the code below results in an error and it seems to make the page re-render many times */}
-      {/* <p>You found Waldo in {timeToFindSeconds} seconds!</p> */}
-      {console.log("This is UserForm return")}
+      <p>You found him! Nice work. Enter your name to get on the scoreboard</p>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Enter your name for the scoreboard</label>
+        <label htmlFor="username">Username: </label>
         <input
           type="text"
           name="username"
@@ -57,6 +68,8 @@ function UserForm() {
       </form>
     </div>
   );
+
+  return showMessageLogicHandler();
 }
 
 export default UserForm;

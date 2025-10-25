@@ -4,7 +4,6 @@ import {
   waldo_x_coordinates,
   waldo_y_coordinates,
 } from "../utils/WALDO_COORDINATES";
-import GameTimeDelta from "./GameTimeDelta";
 
 function VerifyCoordinates({
   event,
@@ -48,7 +47,7 @@ function VerifyCoordinates({
     const nextEndTime = Date.now();
     setEndTime(nextEndTime);
     setGameStatus(false);
-    const timeToFind = GameTimeDelta({ startTime, nextEndTime });
+    // const timeToFind = GameTimeDelta({ startTime, nextEndTime });
     //attaches timestamp marking game end to session cookie
     endSession();
     setGameOver(true);
