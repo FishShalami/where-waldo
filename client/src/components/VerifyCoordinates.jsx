@@ -4,37 +4,18 @@ import {
   waldo_x_coordinates,
   waldo_y_coordinates,
 } from "../utils/WALDO_COORDINATES";
+import WrongGuess from "./WrongGuess";
 
 function VerifyCoordinates({
-  event,
+  gameStatus,
   setGameStatus,
-  startTime,
+  startTime, // not used here but available if needed
   setEndTime,
   guessCoordinates,
   setGuessCoordinates,
   setGameOver,
 }) {
-  //bail if the game isn't running
-  if (!event) return null;
-
-  const userClickCoordinates = ClickCoordinates(event);
-  const nextGuessCoordinates = [...guessCoordinates, userClickCoordinates];
-  setGuessCoordinates(nextGuessCoordinates);
-  console.log("USER GUESS COORDS:", nextGuessCoordinates);
-
-  const mostRecentGuessIndex = nextGuessCoordinates.length - 1;
-  const mostRecentXCoord = nextGuessCoordinates[mostRecentGuessIndex].xPct;
-  const mostRecentYCoord = nextGuessCoordinates[mostRecentGuessIndex].yPct;
-
-  const correctXCoord = waldo_x_coordinates.includes(mostRecentXCoord);
-  const correctYCoord = waldo_y_coordinates.includes(mostRecentYCoord);
-  const correctCoords = correctXCoord && correctYCoord;
-  // console.log("X Guess: ", mostRecentXCoord);
-  // console.log("X Coordinates:", waldo_x_coordinates);
-  // console.log("Y Guess: ", mostRecentYCoord);
-  // console.log("Y Coordinates:", waldo_y_coordinates);
-  // console.log("Guess X Correct?: ", correctXCoord);
-  // console.log("Guess Y Correct?: ", correctYCoord);
+  const [wasWrong, setWasWrong] = React.useState(false);
 
   async function endSession() {
     await fetch("http://localhost:3000/api/session/end", {
@@ -43,27 +24,46 @@ function VerifyCoordinates({
     });
   }
 
-  function correctClick() {
+  function handleImageClick(event) {
+    const click = ClickCoordinates(event);
+
+    const nextGuessCoordinates = [...guessCoordinates, click];
+    setGuessCoordinates(nextGuessCoordinates);
+
+    const { xPct, yPct } = click;
+    const correctCoords =
+      waldo_x_coordinates.includes(xPct) && waldo_y_coordinates.includes(yPct);
+
+    if (!correctCoords) {
+      setWasWrong(true);
+      window.setTimeout(() => {
+        setWasWrong(false);
+      }, 1000);
+      return;
+    }
+
     const nextEndTime = Date.now();
     setEndTime(nextEndTime);
     setGameStatus(false);
-    // const timeToFind = GameTimeDelta({ startTime, nextEndTime });
     //attaches timestamp marking game end to session cookie
     endSession();
     setGameOver(true);
   }
 
-  function clickHandler(correctCoords) {
-    console.log("clickHandler called");
+  return (
+    <>
+      {wasWrong && <WrongGuess />}
 
-    if (!correctCoords) {
-      alert("Guess again");
-      return;
-    }
-    correctClick();
-  }
-
-  return <>{clickHandler(correctCoords)}</>;
+      <div className="image-container">
+        <img
+          src="http://localhost:3000/api"
+          className={gameStatus ? "waldo-image" : "waldo-image-hide"}
+          alt="waldo-image-full-screen"
+          onClick={handleImageClick}
+        />
+      </div>
+    </>
+  );
 }
 
 export default VerifyCoordinates;

@@ -9,4 +9,4 @@
   - trigger session start with a useEffect in LoadWaldoImage
 - Style the UI
   - Change user feedback on guess location to pop-up on bottom of page instead of alert
-  - Remove pop-up window once user has been given feedback that scores are submitted
+    -Disable startt button after initial click

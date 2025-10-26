@@ -37,23 +37,23 @@ function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
     const data = await res.json();
   }
 
-  function imageClickHandler(event) {
-    console.log("calling imageClickHandler");
-    //verify game is running before testing coordinates
-    if (!gameStatus) {
-      return;
-    }
+  // function imageClickHandler(event) {
+  //   console.log("calling imageClickHandler");
+  //   //verify game is running before testing coordinates
+  //   if (!gameStatus) {
+  //     return;
+  //   }
 
-    VerifyCoordinates({
-      event,
-      setGameStatus,
-      startTime,
-      setEndTime,
-      guessCoordinates,
-      setGuessCoordinates,
-      setGameOver,
-    });
-  }
+  //   VerifyCoordinates({
+  //     event,
+  //     setGameStatus,
+  //     startTime,
+  //     setEndTime,
+  //     guessCoordinates,
+  //     setGuessCoordinates,
+  //     setGameOver,
+  //   });
+  // }
 
   return (
     <>
@@ -76,14 +76,16 @@ function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
           setMessageSuccess={setMessageSuccess}
         />
       ) : null}
-      <div className="image-container">
-        <img
-          src="http://localhost:3000/api"
-          className={gameStatus ? "waldo-image" : "waldo-image-hide"}
-          alt="waldo-image-full-screen"
-          onClick={imageClickHandler}
-        />
-      </div>
+
+      <VerifyCoordinates
+        gameStatus={gameStatus}
+        setGameStatus={setGameStatus}
+        startTime={startTime}
+        setEndTime={setEndTime}
+        guessCoordinates={guessCoordinates}
+        setGuessCoordinates={setGuessCoordinates}
+        setGameOver={setGameOver}
+      />
     </>
   );
 }
