@@ -3,7 +3,7 @@ import VerifyCoordinates from "./VerifyCoordinates";
 import GameTimeStart from "./GameTimeStart";
 import UserForm from "./UserForm";
 
-function LoadWaldoImage() {
+function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
   //set state variables
   const [gameStatus, setGameStatus] = React.useState(false);
   const [startTime, setStartTime] = React.useState("");
@@ -70,7 +70,12 @@ function LoadWaldoImage() {
         </button>
       </div>
       <div className="timer">{displayElapsedTime} seconds</div>
-      {gameOver ? <UserForm /> : null}
+      {gameOver ? (
+        <UserForm
+          messageSuccess={messageSuccess}
+          setMessageSuccess={setMessageSuccess}
+        />
+      ) : null}
       <div className="image-container">
         <img
           src="http://localhost:3000/api"

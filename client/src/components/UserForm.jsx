@@ -1,10 +1,9 @@
 import React from "react";
 
-function UserForm() {
+function UserForm({ messageSuccess, setMessageSuccess }) {
   console.log("UserForm component called");
   const [username, setUsername] = React.useState("");
   const [showMessage, setShowMessage] = React.useState(true);
-  const [messageSuccess, setMessageSuccess] = React.useState(false);
   const [messageData, setMessageData] = React.useState({});
 
   async function submitScore() {
@@ -30,7 +29,7 @@ function UserForm() {
     const guessTime = messageData.elapsedMs / 1000;
     return (
       <div className="username-form-container">
-        <p>{`Good job ${messageData.username}! Your score of ${guessTime} was posted`}</p>
+        <p>{`Good job ${messageData.username}! Your score of ${guessTime} seconds was posted`}</p>
         <button onClick={closeButtonHandler}>Close</button>
       </div>
     );

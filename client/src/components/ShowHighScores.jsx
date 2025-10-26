@@ -1,6 +1,6 @@
 import React from "react";
 
-function ShowHighScores() {
+function ShowHighScores({ messageSuccess }) {
   const [scores, setScores] = React.useState([]);
 
   React.useEffect(() => {
@@ -17,7 +17,7 @@ function ShowHighScores() {
       }
     }
     getLeaderboard();
-  }, []);
+  }, [messageSuccess]);
 
   return (
     <div className="high-scores-container">
