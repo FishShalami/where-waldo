@@ -98,9 +98,9 @@
 
 .wrong-guess-banner {
   padding: 16px;
+  width: 100%;
   position: fixed;
-  top: 50%;
-  left: 20%;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,20 +109,23 @@
   z-index: 10;
   font-weight: 700;
   font-size: 2rem;
+  transform: translateY(100%);
   /* Optional fade */
-  animation: wg-fade 0.9s ease-out forwards;
+  /* animation: wg-fade 0.9s ease-out forwards; */
+  animation: slideUpDown 0.8s linear forwards;
 }
 
-@keyframes wg-fade {
+@keyframes slideUpDown {
   0% {
-    opacity: 0;
-    transform: scale(0.98);
+    transform: translateY(100%); /* start hidden */
   }
-  10% {
-    opacity: 1;
-    transform: scale(1);
+  20% {
+    transform: translateY(0); /* slide into view */
+  }
+  80% {
+    transform: translateY(0); /* stay visible */
   }
   100% {
-    opacity: 0.3;
+    transform: translateY(100%); /* slide back down */
   }
 }
