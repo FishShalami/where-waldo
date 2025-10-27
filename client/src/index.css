@@ -109,9 +109,7 @@
   z-index: 10;
   font-weight: 700;
   font-size: 2rem;
-  transform: translateY(100%);
-  /* Optional fade */
-  /* animation: wg-fade 0.9s ease-out forwards; */
+
   animation: slideUpDown 0.8s linear forwards;
 }
 
