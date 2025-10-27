@@ -11,6 +11,7 @@ function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
   const [guessCoordinates, setGuessCoordinates] = React.useState([]);
   const [displayElapsedTime, setDisplayElapsedTime] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(false);
+  const [startButtonActive, setStartButtonActive] = React.useState(true);
 
   //counter for the UI
   React.useEffect(() => {
@@ -37,39 +38,25 @@ function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
     const data = await res.json();
   }
 
-  // function imageClickHandler(event) {
-  //   console.log("calling imageClickHandler");
-  //   //verify game is running before testing coordinates
-  //   if (!gameStatus) {
-  //     return;
-  //   }
-
-  //   VerifyCoordinates({
-  //     event,
-  //     setGameStatus,
-  //     startTime,
-  //     setEndTime,
-  //     guessCoordinates,
-  //     setGuessCoordinates,
-  //     setGameOver,
-  //   });
-  // }
-
   return (
     <>
       <div className="start-button-container">
         <button
+          disabled={!startButtonActive}
           className="start-button"
           onClick={() => {
             setGameStatus(true);
             GameTimeStart({ setStartTime });
             startSession();
+            setStartButtonActive(false);
           }}
         >
           Start Game
         </button>
       </div>
+
       <div className="timer">{displayElapsedTime} seconds</div>
+
       {gameOver ? (
         <UserForm
           messageSuccess={messageSuccess}

@@ -8,5 +8,4 @@
   - Add a timeout for the game? Use client side counter to limit game time.
   - trigger session start with a useEffect in LoadWaldoImage
 - Style the UI
-  - Change user feedback on guess location to pop-up on bottom of page instead of alert
-    -Disable startt button after initial click
+  - Disable startt button after initial click
