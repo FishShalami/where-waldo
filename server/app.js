@@ -2,11 +2,15 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 import cookieSession from "cookie-session";
 import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 
-dotenv.config();
+// Ensure we load env from this server directory regardless of CWD
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 const prisma = new PrismaClient();
 
@@ -23,13 +27,24 @@ app.use(
 );
 
 // add passport session
+const isProd = process.env.NODE_ENV === "production";
+const sessionSecret =
+  process.env.COOKIE_SESSION_SECRET || (isProd ? "" : "dev-secret-change-me");
+
+if (!sessionSecret) {
+  console.error(
+    "Missing COOKIE_SESSION_SECRET. Add it to server/.env (COOKIE_SESSION_SECRET=...)"
+  );
+  process.exit(1);
+}
+
 app.use(
   cookieSession({
     name: "waldo_sess",
-    secret: process.env.COOKIE_SESSION_SECRET,
+    keys: [sessionSecret],
     httpOnly: true,
     sameSite: "lax", // works cross-site if top-level nav; for iframes use "none"
-    secure: process.env.NODE_ENV === "production",
+    secure: isProd,
   })
 );
 
