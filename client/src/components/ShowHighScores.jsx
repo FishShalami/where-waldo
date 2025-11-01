@@ -1,5 +1,5 @@
 import React from "react";
-const API = import.meta.env.VITE_API_URL;
+import { api, API } from "../api";
 
 function ShowHighScores({ messageSuccess }) {
   const [scores, setScores] = React.useState([]);
@@ -7,10 +7,7 @@ function ShowHighScores({ messageSuccess }) {
   React.useEffect(() => {
     async function getLeaderboard() {
       try {
-        const res = await fetch(`${API}/api/leaderboard`, {
-          method: "GET",
-          credentials: "include",
-        });
+        const res = await api(`/api/leaderboard`, { method: "GET" });
         const data = await res.json();
         setScores(data); // should return an array of obj 'username, bestMs'
       } catch (err) {

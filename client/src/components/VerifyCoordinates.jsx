@@ -5,6 +5,7 @@ import {
   waldo_y_coordinates,
 } from "../utils/WALDO_COORDINATES";
 import WrongGuess from "./WrongGuess";
+import { api, API } from "../api";
 
 function VerifyCoordinates({
   gameStatus,
@@ -18,10 +19,7 @@ function VerifyCoordinates({
   const [wasWrong, setWasWrong] = React.useState(false);
 
   async function endSession() {
-    await fetch("http://localhost:3000/api/session/end", {
-      method: "POST",
-      credentials: "include",
-    });
+    await api("/api/session/end", { method: "POST" });
   }
 
   function handleImageClick(event) {
@@ -56,7 +54,7 @@ function VerifyCoordinates({
 
       <div className="image-container">
         <img
-          src="http://localhost:3000/api"
+          src={`${API}/api`}
           className={gameStatus ? "waldo-image" : "waldo-image-hide"}
           alt="waldo-image-full-screen"
           onClick={handleImageClick}

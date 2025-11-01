@@ -1,5 +1,5 @@
 import React from "react";
-const API = import.meta.env.VITE_API_URL;
+import { api, API } from "../api";
 
 function UserForm({ messageSuccess, setMessageSuccess }) {
   console.log("UserForm component called");
@@ -8,9 +8,8 @@ function UserForm({ messageSuccess, setMessageSuccess }) {
   const [messageData, setMessageData] = React.useState({});
 
   async function submitScore() {
-    const res = await fetch(`${API}/api/score`, {
+    const res = await api(`/api/score`, {
       method: "POST",
-      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: username }),
     });
