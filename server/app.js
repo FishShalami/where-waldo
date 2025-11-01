@@ -15,13 +15,25 @@ const app = express();
 app.set("trust proxy", 1);
 
 const staticDir = path.join(process.cwd(), "public");
-const allowedOrigin = process.env.CLIENT_ORIGIN;
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim().replace(/\/$/, ""))
+  .filter(Boolean);
 
 app.use(
   cors({
-    origin: allowedOrigin
-      ? allowedOrigin.split(",").map((origin) => origin.trim())
-      : true,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.length === 0) {
+        return callback(null, true);
+      }
+
+      const normalized = origin.replace(/\/$/, "");
+      if (allowedOrigins.includes(normalized)) {
+        return callback(null, origin);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
@@ -33,6 +45,7 @@ app.use(
     httpOnly: true,
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     secure: process.env.NODE_ENV === "production",
+    partitioned: process.env.NODE_ENV === "production",
     maxAge: undefined,
   })
 );
