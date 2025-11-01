@@ -54,7 +54,7 @@ function VerifyCoordinates({
 
       <div className="image-container">
         <img
-          src={`${API}/api`}
+          src={`${API}/waldo_beach.jpg`}
           className={gameStatus ? "waldo-image" : "waldo-image-hide"}
           alt="waldo-image-full-screen"
           onClick={handleImageClick}
