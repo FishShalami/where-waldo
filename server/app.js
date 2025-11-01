@@ -11,12 +11,17 @@ dotenv.config();
 const prisma = new PrismaClient();
 const app = express();
 
+// allow secure cookies behind Netlify proxy
+app.set("trust proxy", 1);
+
 const staticDir = path.join(process.cwd(), "public");
 const allowedOrigin = process.env.CLIENT_ORIGIN;
 
 app.use(
   cors({
-    origin: allowedOrigin ? allowedOrigin.split(",") : true,
+    origin: allowedOrigin
+      ? allowedOrigin.split(",").map((origin) => origin.trim())
+      : true,
     credentials: true,
   })
 );
