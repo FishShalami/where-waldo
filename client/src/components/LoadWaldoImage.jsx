@@ -2,6 +2,7 @@ import React from "react";
 import VerifyCoordinates from "./VerifyCoordinates";
 import GameTimeStart from "./GameTimeStart";
 import UserForm from "./UserForm";
+const API = import.meta.env.VITE_API_URL;
 
 function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
   //set state variables
@@ -31,7 +32,7 @@ function LoadWaldoImage({ messageSuccess, setMessageSuccess }) {
 
   //move this into a useEffect()?
   async function startSession() {
-    const res = await fetch("http://localhost:3000/api/session/start", {
+    const res = await fetch(`${API}/api/session/start`, {
       method: "POST",
       credentials: "include",
     });
