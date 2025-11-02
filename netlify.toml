@@ -1,17 +1,17 @@
 [build]
-  command = "npm ci && npx prisma generate"
-  publish = "public"
+  command = "npm ci --prefix client && npm run build --prefix client && npm ci --prefix server && npx --prefix server prisma generate"
+  publish = "client/dist"
 
 [build.environment]
   NODE_VERSION = "20"
 
 [functions]
-  directory = "netlify/functions"
+  directory = "server/netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["@prisma/client"]
   included_files = [
-    "public/**",
-    "prisma/**"
+    "server/public/**",
+    "server/prisma/**"
   ]
 
 [[redirects]]
@@ -23,3 +23,4 @@
   from = "/api"
   to = "/.netlify/functions/api"
   status = 200
+

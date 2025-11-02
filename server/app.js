@@ -84,9 +84,7 @@ app.get("/api/leaderboard", async (req, res) => {
 app.post("/api/session/start", (req, res) => {
   if (!req.session) req.session = {};
   req.session.gameStart = Date.now();
-  res
-    .status(200)
-    .json({ ok: true, startedAt: req.session.gameStart, debug: req.session });
+  res.status(200).json({ ok: true, startedAt: req.session.gameStart });
 });
 
 app.post("/api/session/end", (req, res) => {
@@ -96,7 +94,6 @@ app.post("/api/session/end", (req, res) => {
     ok: true,
     startedAt: req.session.gameStart,
     endedAt: req.session.gameEnd,
-    debug: req.session,
   });
 });
 
@@ -104,11 +101,7 @@ app.get("/api/session/end", (req, res) => {
   const endTime = req.session?.gameEnd;
   const startTime = req.session?.gameStart;
   if (!startTime || !endTime) {
-    return res.status(400).json({
-      error: "No completed session",
-      session: req.session,
-      cookie: req.headers.cookie,
-    });
+    return res.status(400).json({ error: "No completed session" });
   }
 
   const delta = (endTime - startTime) / 1000;
@@ -123,18 +116,10 @@ app.post("/api/score", async (req, res) => {
     }
 
     if (!req.session?.gameStart) {
-      return res.status(400).json({
-        error: "No active game session",
-        session: req.session,
-        cookie: req.headers.cookie,
-      });
+      return res.status(400).json({ error: "No active game session" });
     }
     if (!req.session?.gameEnd) {
-      return res.status(400).json({
-        error: "Game hasn't ended",
-        session: req.session,
-        cookie: req.headers.cookie,
-      });
+      return res.status(400).json({ error: "Game hasn't ended" });
     }
 
     const elapsedMs = req.session.gameEnd - req.session.gameStart;
