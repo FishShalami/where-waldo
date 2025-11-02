@@ -1,6 +1,7 @@
 // imports
 import express from "express";
 import path from "path";
+import { existsSync } from "fs";
 import dotenv from "dotenv";
 import cookieSession from "cookie-session";
 import { PrismaClient } from "@prisma/client";
@@ -14,7 +15,10 @@ const app = express();
 // allow secure cookies behind Netlify proxy
 app.set("trust proxy", 1);
 
-const staticDir = path.join(process.cwd(), "public");
+const cwd = process.cwd();
+const staticDir = existsSync(path.join(cwd, "server", "public"))
+  ? path.join(cwd, "server", "public")
+  : path.join(cwd, "public");
 const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim().replace(/\/$/, ""))
