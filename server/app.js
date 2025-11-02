@@ -15,10 +15,20 @@ const app = express();
 // allow secure cookies behind Netlify proxy
 app.set("trust proxy", 1);
 
-const cwd = process.cwd();
-const staticDir = existsSync(path.join(cwd, "server", "public"))
-  ? path.join(cwd, "server", "public")
-  : path.join(cwd, "public");
+const candidateStaticDirs = [
+  process.env.LAMBDA_TASK_ROOT && path.join(process.env.LAMBDA_TASK_ROOT, "server", "public"),
+  process.env.LAMBDA_TASK_ROOT && path.join(process.env.LAMBDA_TASK_ROOT, "public"),
+  path.join(process.cwd(), "server", "public"),
+  path.join(process.cwd(), "public"),
+];
+
+const staticDir = candidateStaticDirs.find(
+  (dirPath) => dirPath && existsSync(dirPath)
+);
+
+if (!staticDir) {
+  throw new Error("Unable to locate static assets directory.");
+}
 const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim().replace(/\/$/, ""))
